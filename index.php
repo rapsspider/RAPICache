@@ -12,6 +12,6 @@ include 'config.php';
 
 $url = isset($_GET['_url']) ? $_GET['_url'] : '/';
 
-$view = Router::route($url);
+$view = ApiLOL\Router::route($url);
 
 echo $view->body;

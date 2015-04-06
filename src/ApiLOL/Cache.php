@@ -1,5 +1,7 @@
 <?php
 
+namespace ApiLOL;
+
 class Cache {
     
     /**

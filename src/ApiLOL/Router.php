@@ -1,7 +1,15 @@
 <?php
 
+namespace ApiLOL;
+
 class Router {
     
+    /**
+     * Contient la liste des routes disponibles
+     * Une route représente une url entrante et une url
+     * de sortie
+     * @var Array
+     */
     protected static $_routes = [];
     
     /**
@@ -33,33 +41,42 @@ class Router {
      * @return String $url
      */
     public static function getRoutedUrl($url) {
-        $route = [
-            'url' => false,
-            'args' => []
-        ];
         $matches = null;
         
         foreach(self::$_routes as $urlLocal => $urlDistant) {
-
-            if($urlLocal == $url) {
-                $route['url'] = $urlDistant;
-                break;
-            }
-                
-            $url_regex = preg_replace('%{([a-z_A-Z]+)}%', '(?P<$1>[\d\w]+)', $urlLocal, -1, $count);
-            if($count > 0 && preg_match('%' . $url_regex . '%', $url, $matches)) {
-                foreach($matches as $key => $value){
-                    if(is_numeric($key)) 
-                        unset($matches[$key]);
-                }
-                
-                $route['url'] = $urlDistant;
-                $route['args'] = $matches;
-                break;
-            }
+            $routedUrl = self::_getRoutedUrl($url, $urlLocal, $urlDistant);
+            if($routedUrl) return $routedUrl;
         }
         
-        return $route['url'] ? self::replace($route['url'], $route['args']) : null;
+    }
+    
+    /**
+     * Retourne null ou l'url à utiliser si l'url correspondant à
+     * l'url local
+     * @param String $url Url à router
+     * @param String $urlLocal Possible url à utiliser si elle ressemble à $url
+     * @param String $urlDistant Sera utiliser pour créer l'url distant
+     * @return Null|String Retourne null ou l'url à utiliser.
+     */
+    public static function _getRoutedUrl($url, $urlLocal, $urlDistant) {
+        $found = false;
+        $args = [];
+        
+        if($urlLocal == $url) {
+            return self::replace($urlDistant);
+        } // else
+
+        $url_regex = preg_replace('%{([a-z_A-Z]+)}%', '(?P<$1>[\d\w]+)', $urlLocal, -1, $count);
+        if($count > 0 && preg_match('%' . $url_regex . '%', $url, $args)) {
+            foreach($args as $key => $value){
+                if(is_numeric($key)) 
+                    unset($args[$key]);
+            }
+
+            $found = true;
+        }
+        
+        return $found ? self::replace($urlDistant, $args) : null;
     }
     
     /**
@@ -68,14 +85,15 @@ class Router {
      * @param Array $args
      * @return String l'url avec les valeurs
      */
-    public static function replace($url, $args) {
+    public static function replace($url, $args = []) {
         $keys = ['/{key}/'];
         $values = [Config::$key];
+        
         foreach($args as $var => $value) {
             $keys[] = '/{' . $var . '}/';
             $values[] = $value;
         }
-        
+
         return preg_replace($keys, $values, $url);
     }
     
