@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiLOL;
+namespace RAPICache;
 
 class View {
     
