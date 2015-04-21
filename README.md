@@ -6,4 +6,4 @@ It's commented in french.
 
 ## How to use it ?
 
-Just rename config.default.php to config.php and edit routes.php.
+Just rename config.default.php to config.php and rename routes.example.php to routes.php.
