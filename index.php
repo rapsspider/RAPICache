@@ -2,11 +2,7 @@
 
 define('__APP_ROOT__', __DIR__);
 
-require_once 'src/RAPICache/Config.php';
-require_once 'src/RAPICache/View.php';
-require_once 'src/RAPICache/Cache.php';
-require_once 'src/RAPICache/Route.php';
-require_once 'src/RAPICache/Router.php';
+require 'vendor/autoload.php';
 
 include 'config.php';
 include 'routes.php';
