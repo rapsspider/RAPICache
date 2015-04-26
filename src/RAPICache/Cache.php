@@ -35,7 +35,7 @@ class Cache {
      */
     public static function save(View &$view) {
         $file = Cache::getCacheFileName($view);
-        $f = fopen($file, 'x');
+        $f = fopen($file, 'w');
         fwrite($f, $view->body);
         fclose($f);
     }

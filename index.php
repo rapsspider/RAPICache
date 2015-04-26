@@ -15,4 +15,4 @@ $url = isset($_GET['_url']) ? $_GET['_url'] : '/';
 
 $view = RAPICache\Router::route($url);
 
-echo $view->body;
+echo $view;

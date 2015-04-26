@@ -25,6 +25,13 @@ class View {
     }
     
     /**
+     * Return the object as a String
+     */
+    public function __toString() {
+        return $this->body;
+    }
+    
+    /**
      * Récupère le contenu de la vue en faisant appel à l'url
      */
     public function get() {
